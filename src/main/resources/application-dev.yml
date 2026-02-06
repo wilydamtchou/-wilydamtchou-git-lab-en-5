@@ -1,0 +1,22 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: demo-pipeline
+
+# DEV Environment Configuration
+app:
+  name: Demo Pipeline - DEV
+  environment: development
+  debug: true
+  log:
+    level: DEBUG
+
+logging:
+  level:
+    root: INFO
+    com.example.demopipeline: DEBUG
+    org.springframework.web: DEBUG
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
