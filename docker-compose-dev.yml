@@ -1,0 +1,38 @@
+services:
+  demo-pipeline-dev:
+    image: demo-pipeline:dev
+    container_name: demo-pipeline-dev
+    build:
+      context: .
+      dockerfile: Dockerfile
+      # Force rebuild on each compose up
+      no_cache: true
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      APP_ENV: DEV
+      JAVA_OPTS: "-Xmx512m -Xms256m"
+    ports:
+      - "8081:8080"
+    networks:
+      - demo-net
+    restart: always
+    # Health check to verify app is running
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 2s
+      timeout: 5s
+      retries: 5
+      start_period: 30s  # Allow 30s startup before health check kicks in
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+
+networks:
+  demo-net:
+    driver: bridge
